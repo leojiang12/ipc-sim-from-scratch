@@ -9,7 +9,7 @@ static int failures = 0;
     std::cerr << "FAIL: " #cond "  (line " << __LINE__ << ")\n"; ++failures; \
     } } while (0)
 
-void print_pcg_results(PCGResult r)
+void print_pcg_results(PCGResult& r)
 {
     std::cerr << "PCG Result Summary " << r.flag << std::endl;
     std::cerr << "flag: " << r.flag << std::endl;
@@ -136,6 +136,7 @@ int main(int argc, char *argv[]) {
         test1_identity();
         test2_small_spd();
         test3_random_50x50_spd();
+        test4_random_500x500_spd();
 
     // --- T0: identity, plumbing ---
     } else if (!strcmp(argv[1], "identity")) {
