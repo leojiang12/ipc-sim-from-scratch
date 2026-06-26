@@ -15,12 +15,12 @@ void DOFMap::apply_dirichlet(Eigen::SparseMatrix<double>& A, Eigen::VectorXd& b,
                    
     /** Fill diagonals with fill_diag if provide one greater than 0, 
         else compute mean of trace of A to use as filler. */
-    int fill_val = diag_fill;
+    double fill_val = diag_fill;
 
     if (diag_fill < 0) {
         // Compute trace of A
         double trace_mean = 0.0;
-        for (size_t i = 0; i < A.outerSize(); ++i) {
+        for (size_t i = 0; i < (size_t)A.outerSize(); ++i) {
             for (Eigen::SparseMatrix<double>::InnerIterator it(A, i); it; ++it) {
                 if (it.row() == it.col()) { // Check if it's on the main diagonal
                     trace_mean += it.value();
@@ -45,7 +45,7 @@ void DOFMap::apply_dirichlet(Eigen::SparseMatrix<double>& A, Eigen::VectorXd& b,
         // Assuming A is a Column-Major SparseMatrix<double>
 
         // Zero out the row of A 
-        for (size_t j = 0; j < A.outerSize(); j++) {
+        for (size_t j = 0; j < (size_t)A.outerSize(); j++) {
             for (Eigen::SparseMatrix<double>::InnerIterator it(A, j); it; ++it) {   // it(A, j) gets col j iterator
                 if ((it.row() == fixed_dof) && (it.col() != fixed_dof)) {
                     it.valueRef() = 0.0;
@@ -102,7 +102,7 @@ DOFMap make_dofmap_fixed_dofs(int num_dofs, const std::vector<int>& fixed_dofs) 
     dofmap.n_free = num_dofs;
     dofmap.is_fixed = std::vector<char> (num_dofs, 0);
 
-    for (size_t i = 0; i < fixed_dofs.size(); i++) {
+    for (size_t i = 0; i < (size_t)fixed_dofs.size(); i++) {
         int dof = fixed_dofs[i];
         dofmap.n_fixed += 1;
         dofmap.n_free -= 1;

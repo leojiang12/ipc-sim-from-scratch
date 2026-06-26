@@ -4,22 +4,22 @@
 #include <Eigen/Dense>
 #include <iostream>
 
-void State::update_position(Eigen::VectorXd& x) {
+void State::update_position(Eigen::VectorXd& x_new) {
     this->x_prev = this->x;
-    this->x = x;
+    this->x = x_new;
 }
 
-void State::update_velocity(Eigen::VectorXd& v) {
+void State::update_velocity(Eigen::VectorXd& v_new) {
     this->v_prev = this->v;
-    this->v = v;
+    this->v = v_new;
 }
 
 State build_initial_state(Mesh& mesh) {
 
     State s;
 
-    int n = mesh.initial_positions.size();
-    int d = mesh.initial_positions[0].size();
+    size_t n = mesh.initial_positions.size();
+    size_t d = mesh.initial_positions[0].size();
 
     // Allocate/Initialize position/velocities as 0s vectors of length n*d
     Eigen::VectorXd x0 = Eigen::VectorXd::Zero(n * d);

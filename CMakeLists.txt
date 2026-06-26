@@ -51,3 +51,12 @@ add_test(NAME pcg_random_500x500 COMMAND test_pcg random_500x500_spd)
 add_executable(test_dofmap tests/test_dofmap.cpp)
 target_link_libraries(test_dofmap PRIVATE mini)
 add_test(NAME dofmap_apply_dirichlet COMMAND test_dofmap apply_dirichlet)
+
+
+
+# Compiler flags    (private, so flags are not pushed onto everything links to mini)
+target_compile_options(mini      PRIVATE -Wall -Wextra -Wshadow)
+target_compile_options(sim       PRIVATE -Wall -Wextra -Wshadow)
+target_compile_options(test_pcg  PRIVATE -Wall -Wextra -Wshadow)
+target_compile_options(test_dofmap PRIVATE -Wall -Wextra -Wshadow)
+

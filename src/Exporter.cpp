@@ -37,8 +37,8 @@ void write_obj(const std::string& output_dir, int frame,
             return i * (nx + 1) + j;
         };
         
-        for (size_t i = 0; i < mesh.ny; i++) {
-            for (size_t j = 0; j < mesh.nx; j++) {
+        for (size_t i = 0; i < (size_t)mesh.ny; i++) {
+            for (size_t j = 0; j < (size_t)mesh.nx; j++) {
 
                 int v00 = id(i, j);
                 int v01 = id(i, j + 1);
