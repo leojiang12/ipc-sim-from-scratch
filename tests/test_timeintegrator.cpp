@@ -1,5 +1,7 @@
-#include "DOFMap.h"      // match your actual layout (see note below)
+#include "TimeIntegrator.h"
 #include "Mesh.h"
+#include "State.h"
+
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
 #include <iostream>
@@ -39,12 +41,6 @@ void test1_check_apply_dirichlet()
 
     // DOFMap Instantiation
     std::vector<int> fixed_nodes = {0, 3};
-
-    std::cout << "\n***Zeroing out nodes:";
-    for (int fixed_node : fixed_nodes)
-        std::cout << fixed_node << " ";
-    std::cout << "***\n"<< std::endl;
-
     DOFMap dofmap = make_dofmap_fixed_nodes(n, fixed_nodes);
 
     // Solutions

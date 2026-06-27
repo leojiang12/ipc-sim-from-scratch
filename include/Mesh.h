@@ -8,7 +8,13 @@
 struct Mesh {
     std::vector<Eigen::Vector2d> initial_positions;
     std::vector<Eigen::Vector3i> triangles;
-    std::vector<std::pair<int, int>> edges; // useful for springs
+
+    // useful for mass-spring
+    std::vector<std::pair<int, int>> edges;
+    std::vector<double> m;          // mass of node (point particle model)
+    std::vector<double> k;          // stiffness
+    std::vector<double> l2;         // rest length squared of edge
+
     int nx = 0;
     int ny = 0;
 };

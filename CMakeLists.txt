@@ -15,7 +15,9 @@ add_library(mini
     src/Mesh.cpp
     src/State.cpp
     src/DOFMap.cpp
+    src/utils.cpp
     src/PCGSolver.cpp
+    src/TimeIntegrator.cpp
     src/Exporter.cpp
 )
 
@@ -33,10 +35,19 @@ target_link_libraries(mini
 add_executable(sim
     src/main.cpp
 )
+
 target_link_libraries(sim PRIVATE mini)
 
-# --- tests ---     use  ctest --test-dir build/ --output-on-failure   for all
-#                    or  ctest -R exe_name --test-dir build/ --out-on-failure   for a specific test
+# --- tests ---     
+
+# list the names first — always do this when unsure
+#   ctest --test-dir build -N
+
+# run exactly one (anchored so it can't match others)
+#   ctest --test-dir build -R '^dofmap_apply_dirichlet$' --output-on-failure
+
+# run a whole family (partial match — runs all 4 pcg_* tests)
+#   ctest --test-dir build -R pcg
 enable_testing()
 
 # pcg test
@@ -52,9 +63,12 @@ add_executable(test_dofmap tests/test_dofmap.cpp)
 target_link_libraries(test_dofmap PRIVATE mini)
 add_test(NAME dofmap_apply_dirichlet COMMAND test_dofmap apply_dirichlet)
 
+# util functions test
+add_executable(test_utils tests/test_utils.cpp)
+target_link_libraries(test_utils PRIVATE mini)
+add_test(NAME utils_make_PSD COMMAND test_utils make_PSD)
 
-
-# Compiler flags    (private, so flags are not pushed onto everything links to mini)
+# Compiler flags    (private, so flags are not pushed onto everything linking to mini)
 target_compile_options(mini      PRIVATE -Wall -Wextra -Wshadow)
 target_compile_options(sim       PRIVATE -Wall -Wextra -Wshadow)
 target_compile_options(test_pcg  PRIVATE -Wall -Wextra -Wshadow)
