@@ -13,13 +13,13 @@
 void step_forward(State& current_state, Mesh& mesh, DOFMap& dofmap, double h, double tol);
 
 /** IP Energy (value) computation */
-double IP_val(Eigen::VectorXd& x_tilde, State& current_state, Mesh& mesh, double h);  
+double IP_val(const Eigen::VectorXd& x, Eigen::VectorXd& x_tilde, Mesh& mesh, double h);  
 
 /** IP gradient computation */
-Eigen::VectorXd IP_grad(Eigen::VectorXd& x_tilde, State& current_state, Mesh& mesh, double h);  
+Eigen::VectorXd IP_grad(const Eigen::VectorXd& x, Eigen::VectorXd& x_tilde, Mesh& mesh, double h);  
 
 /** IP Hessian computation */
-Eigen::SparseMatrix<double> IP_hess(Eigen::VectorXd& x_tilde, State& current_state, Mesh& mesh, double h);
+Eigen::SparseMatrix<double> IP_hess(const Eigen::VectorXd& x, Eigen::VectorXd& x_tilde, Mesh& mesh, double h);
 
 /** Search direction computation per newton iteration */
-Eigen::VectorXd search_dir(Eigen::VectorXd& x_tilde, State& current_state, Mesh& mesh, DOFMap &dofmap, double h);
+Eigen::VectorXd search_dir(const Eigen::VectorXd& x, Eigen::VectorXd& x_tilde, Mesh& mesh, DOFMap &dofmap, double h);

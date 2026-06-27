@@ -10,6 +10,7 @@ Mesh make_square_grid_edges(int nx, int ny, double width, double height) {
             - Stores only edge elements.
     */
     Mesh mesh;
+    mesh.initial_positions = Eigen::MatrixXd((nx + 1) * (ny + 1), 2);
     mesh.nx = nx;
     mesh.ny = ny;
 
@@ -20,8 +21,7 @@ Mesh make_square_grid_edges(int nx, int ny, double width, double height) {
         for (int j = 0; j <= nx; j++) {
             double x = width * (static_cast<double>(j) / nx - 0.5);
             double y = height * (static_cast<double>(i) / ny - 0.5);
-            mesh.initial_positions.push_back(Eigen::Vector2d(x + square_center_x, 
-                                              y + square_center_y));
+            mesh.initial_positions.row(i*(nx + 1) + j) = Eigen::Vector2d(x + square_center_x, y + square_center_y);
         }
     }
 
@@ -66,6 +66,7 @@ Mesh make_square_grid_triangles(int nx, int ny, double width, double height) {
     */
 
     Mesh mesh;
+    mesh.initial_positions = Eigen::MatrixXd((nx + 1) * (ny + 1), 2);
     mesh.nx = nx;
     mesh.ny = ny;
 
@@ -76,7 +77,7 @@ Mesh make_square_grid_triangles(int nx, int ny, double width, double height) {
         for (int j = 0; j <= nx; j++) {
             double x = width * static_cast<double>(j) / nx;
             double y = height * static_cast<double>(i) / ny;
-            mesh.initial_positions.push_back({x - 0.5 + square_center_x, y - 0.5 + square_center_y});
+            mesh.initial_positions.row(i*(nx + 1) + j) = Eigen::Vector2d(x + square_center_x, y + square_center_y);
         }
     }
 

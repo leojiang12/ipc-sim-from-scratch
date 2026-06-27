@@ -18,8 +18,8 @@ State build_initial_state(Mesh& mesh) {
 
     State s;
 
-    size_t n = mesh.initial_positions.size();
-    size_t d = mesh.initial_positions[0].size();
+    size_t n = mesh.initial_positions.rows();
+    size_t d = mesh.initial_positions.cols();
 
     // Allocate/Initialize position/velocities as 0s vectors of length n*d
     Eigen::VectorXd x0 = Eigen::VectorXd::Zero(n * d);
@@ -28,10 +28,10 @@ State build_initial_state(Mesh& mesh) {
     Eigen::VectorXd x_prev = Eigen::VectorXd::Zero(n * d);
     Eigen::VectorXd v_prev = Eigen::VectorXd::Zero(n * d);
 
-    // interleaved [x0,y0,x1,y1,...]
-    for (size_t i = 0; i < n; i++) {
-        for (size_t j = 0; j < d; j++) {
-            x0(2*i + j) = mesh.initial_positions[i](j);
+    // interleaved [x0,y0,x1,y1,...] and loop as column major (Eigen default)
+    for (size_t i = 0; i < d; i++) {
+        for (size_t j = 0; j < n; j++) {
+            x0(d*i + j) = mesh.initial_positions(j, i);
         }
     }
 

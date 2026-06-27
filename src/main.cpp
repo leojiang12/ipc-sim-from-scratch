@@ -23,12 +23,12 @@ int main() {
 
 
     // Build initial state
-    //State state = build_initial_state(mesh);
-    //Eigen::VectorXd initial_velocities = Eigen::VectorXd::Zero(state.x.size());     // v0 = 0 by default on initialization, use for arbitrary velocity
+    State state = build_initial_state(mesh);
+    Eigen::VectorXd initial_velocities = Eigen::VectorXd::Zero(state.x.size());     // v0 = 0 by default on initialization, use for arbitrary velocity
 
-    // int frame = 0;
-    // write_obj(output_dir, frame, state.x, mesh);
-    // std::cout << "wrote frame 0 to " << "output_dir" << "/" << frame << ".obj" << std::endl;
+    int frame = 0;
+    write_obj(output_dir, frame, state.x, mesh);
+    std::cout << "wrote frame 0 to " << "output_dir" << "/" << frame << ".obj" << std::endl;
 
 
     return 0;

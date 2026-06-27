@@ -17,6 +17,7 @@ add_library(mini
     src/DOFMap.cpp
     src/utils.cpp
     src/PCGSolver.cpp
+    src/InertiaEnergy.cpp
     src/TimeIntegrator.cpp
     src/Exporter.cpp
 )
