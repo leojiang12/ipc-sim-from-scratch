@@ -16,6 +16,8 @@ struct Mesh {
 
     int nx = 0;
     int ny = 0;
+
+    void assign_masses(double rho);
 };
 
 Mesh make_square_grid_edges(int nx, int ny, double width, double height);

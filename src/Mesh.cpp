@@ -5,6 +5,32 @@
 
 // initialize point mass matrix (mass-spring)
 
+void Mesh::assign_masses(double rho) {
+
+    size_t n = this->initial_positions.rows();
+    size_t d = this->initial_positions.cols();
+
+    double node_mass = (rho * this->nx * this->ny) / (n * d);   // total mass divided by num nodes
+
+    // Create COO coordinate triplet vector
+    std::vector<Eigen::Triplet<double>> triplets;
+    triplets.reserve(n * d);       // 3 2n-lengthed arrays
+
+    // Loop over nodes (diagonal matrix)
+    for (size_t i = 0; i < n; i++) {
+        for (size_t j = 0; j < d; j++) {
+            triplets.push_back(Eigen::Triplet<double>(i * 2 + j, i * 2 + j, node_mass));
+        }
+    }
+
+    // Initialize the sparse matrix
+    this->M = Eigen::SparseMatrix<double>(n * d, n * d);
+    
+    // Populate the matrix
+    this->M.setFromTriplets(triplets.begin(), triplets.end());
+
+}
+
 Mesh make_square_grid_edges(int nx, int ny, double width, double height) {
 
     /* 

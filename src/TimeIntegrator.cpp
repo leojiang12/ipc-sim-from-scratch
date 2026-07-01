@@ -21,7 +21,7 @@ Eigen::VectorXd search_dir(const Eigen::VectorXd& x_tilde, State& current_state,
 
 
 /** Newton iteration loop */
-void step_forward(State& current_state, const Mesh& mesh, const DOFMap& dofmap, double h, double tol) {
+int step_forward(State& current_state, const Mesh& mesh, const DOFMap& dofmap, double h, double tol) {
 
     Eigen::VectorXd x_tilde = current_state.x + h * current_state.v;
     Eigen::VectorXd x_n = current_state.x;      // deep copy of x
@@ -52,6 +52,8 @@ void step_forward(State& current_state, const Mesh& mesh, const DOFMap& dofmap, 
     current_state.v_prev = current_state.v;
     current_state.v = (x - x_n) / h;
     current_state.x = x;
+
+    return i;
 }
 
 /** IP Energy (value) computation */

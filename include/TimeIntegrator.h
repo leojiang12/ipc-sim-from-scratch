@@ -10,7 +10,7 @@
 #include <Eigen/Sparse>
 
 /** Newton iteration loop */
-void step_forward(State& current_state, const Mesh& mesh, const DOFMap& dofmap, double h, double tol);
+int step_forward(State& current_state, const Mesh& mesh, const DOFMap& dofmap, double h, double tol);
 
 /** IP Energy (value) computation */
 double IP_val(const Eigen::VectorXd& x, const Eigen::VectorXd& x_tilde, const Mesh& mesh, double h);  

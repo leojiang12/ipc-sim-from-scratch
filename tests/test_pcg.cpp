@@ -1,5 +1,5 @@
 #include "PCGSolver.h"
-#include "test_utils.h"
+#include "testing_utils.h"
 
 #include <Eigen/Dense>
 #include <iostream>

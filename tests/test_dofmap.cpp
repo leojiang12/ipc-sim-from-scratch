@@ -1,6 +1,6 @@
 #include "DOFMap.h"      // match your actual layout (see note below)
 #include "Mesh.h"
-#include "test_utils.h"
+#include "testing_utils.h"
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
 #include <iostream>
