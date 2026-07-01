@@ -1,15 +1,10 @@
 #include "DOFMap.h"      // match your actual layout (see note below)
 #include "Mesh.h"
+#include "test_utils.h"
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
 #include <iostream>
 #include <string>
-
-static int failures = 0;
-#define CHECK(cond) \
-    do { if (!(cond)) { \
-    std::cerr << "FAIL: " #cond "  (line " << __LINE__ << ")\n"; ++failures; \
-    } } while (0)
 
 
 void print_apply_dirichlet_results(Eigen::SparseMatrix<double>& A_sp, Eigen::VectorXd& b)

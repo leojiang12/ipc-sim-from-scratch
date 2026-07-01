@@ -1,8 +1,7 @@
 #pragma once
 
-#include "Mesh.h"
-
 #include <Eigen/Dense>
+#include <Eigen/Sparse>
 #include <vector>
 
 struct Mesh {
@@ -11,7 +10,7 @@ struct Mesh {
 
     // useful for mass-spring
     std::vector<std::pair<int, int>> edges;
-    std::vector<double> m;          // mass of each node                    length n
+    Eigen::SparseMatrix<double> M;          // mass matrix                  dn x dn
     std::vector<double> k;          // stiffness of edge                    length e
     std::vector<double> l2;         // rest length squared of edge          length e
 

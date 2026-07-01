@@ -1,5 +1,6 @@
 #include <Eigen/Dense>
 #include <iostream>
+
 /** Positive Semi-Definite Projection */
 
 Eigen::MatrixXd make_PSD(Eigen::MatrixXd& hess) {
@@ -15,7 +16,7 @@ Eigen::MatrixXd make_PSD(Eigen::MatrixXd& hess) {
         This modification is crucial for Newton's method.
     */
 
-    Eigen::SelfAdjointEigenSolver<Eigen::MatrixXd> es(hess);     // dynamic runtime options 
+    Eigen::SelfAdjointEigenSolver<Eigen::MatrixXd> es(hess);
     Eigen::VectorXd eig = es.eigenvalues();
     size_t n = eig.size();
     for (size_t i = 0; i < n; i++) {
@@ -25,3 +26,5 @@ Eigen::MatrixXd make_PSD(Eigen::MatrixXd& hess) {
     // U E_clamped V^T
     return es.eigenvectors() * eig.asDiagonal() * es.eigenvectors().transpose();
 }
+
+/** Finite difference checker using central differences */

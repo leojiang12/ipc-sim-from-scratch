@@ -14,14 +14,14 @@
 
 /** Forward declarations to tell the compiler these 
     functions exist but defined after step_foward() */
-double IP_val(Eigen::VectorXd& x_tilde, State& current_state, Mesh& mesh, double h);  
-Eigen::VectorXd IP_grad(Eigen::VectorXd& x_tilde, State& current_state, Mesh& mesh, double h);  
-Eigen::SparseMatrix<double> IP_hess(Eigen::VectorXd& x_tilde, State& current_state, Mesh& mesh, double h);  
-Eigen::VectorXd search_dir(Eigen::VectorXd& x_tilde, State& current_state, Mesh& mesh, DOFMap& dofmap, double h);
+double IP_val(const Eigen::VectorXd& x_tilde, State& current_state, const Mesh& mesh, double h);  
+Eigen::VectorXd IP_grad(const Eigen::VectorXd& x_tilde, State& current_state, const Mesh& mesh, double h);  
+Eigen::SparseMatrix<double> IP_hess(const Eigen::VectorXd& x_tilde, State& current_state, const Mesh& mesh, double h);  
+Eigen::VectorXd search_dir(const Eigen::VectorXd& x_tilde, State& current_state, const Mesh& mesh, const DOFMap& dofmap, double h);
 
 
 /** Newton iteration loop */
-void step_forward(State& current_state, Mesh& mesh, DOFMap& dofmap, double h, double tol) {
+void step_forward(State& current_state, const Mesh& mesh, const DOFMap& dofmap, double h, double tol) {
 
     Eigen::VectorXd x_tilde = current_state.x + h * current_state.v;
     Eigen::VectorXd x_n = current_state.x;      // deep copy of x
@@ -55,25 +55,25 @@ void step_forward(State& current_state, Mesh& mesh, DOFMap& dofmap, double h, do
 }
 
 /** IP Energy (value) computation */
-double IP_val(const Eigen::VectorXd& x, Eigen::VectorXd& x_tilde, Mesh& mesh, double h) {
-    return InertiaEnergy.val(x, x_tilde, mesh);
+double IP_val(const Eigen::VectorXd& x, const Eigen::VectorXd& x_tilde, const Mesh& mesh, double h) {
+    return InertiaEnergy::val(x, x_tilde, mesh);
 }  
 
 /** IP gradient computation */
-Eigen::VectorXd IP_grad(const Eigen::VectorXd& x, Eigen::VectorXd& x_tilde, Mesh& mesh, double h) {
-    return InertiaEnergy.grad(x, x_tilde, mesh);
+Eigen::VectorXd IP_grad(const Eigen::VectorXd& x, const Eigen::VectorXd& x_tilde, const Mesh& mesh, double h) {
+    return InertiaEnergy::grad(x, x_tilde, mesh);
 }  
 
 /** IP Hessian computation */
-Eigen::SparseMatrix<double> IP_hess(const Eigen::VectorXd& x, Eigen::VectorXd& x_tilde, Mesh& mesh, double h) {
-    return InertiaEnergy.hess(x, x_tilde, mesh);
+Eigen::SparseMatrix<double> IP_hess(const Eigen::VectorXd& x, const Eigen::VectorXd& x_tilde, const Mesh& mesh, double h) {
+    return InertiaEnergy::hess(x, x_tilde, mesh);
 }
 
 /** Search direction computation per newton iteration */
-Eigen::VectorXd search_dir(const Eigen::VectorXd& x, Eigen::VectorXd& x_tilde,  
-                                Mesh& mesh, DOFMap& dofmap, double h) {
+Eigen::VectorXd search_dir(const Eigen::VectorXd& x, const Eigen::VectorXd& x_tilde,  
+                                const Mesh& mesh, const DOFMap& dofmap, double h) {
     Eigen::SparseMatrix<double> projected_hess = IP_hess(x, x_tilde, mesh, h);
-    Eigen::VectorXd grad = IP_grad(x, x_tilde, mesh, h).reshaped<Eigen::RowMajor>(x.size(), 1);
+    Eigen::VectorXd grad = IP_grad(x, x_tilde, mesh, h);//.reshaped<Eigen::RowMajor>(x.size(), 1);
 
     // Eliminate Dirichlet BC DOFs by 0-ing corresponding gradient and Hessian entries.
     dofmap.apply_dirichlet(projected_hess, grad);
@@ -86,15 +86,14 @@ Eigen::VectorXd search_dir(const Eigen::VectorXd& x, Eigen::VectorXd& x_tilde,
         return projected_hess * y; 
     };
 
-    PCGResult r = pcg(matvec, -grad, opts);   // P p = -g : P is proj hess, g is grad, p is our search direction
+    // Solves a Ax = b: shapes (dn x dn), (dn x 1), and (dn x 1)
+    PCGResult r = pcg(matvec, -grad, opts);   // A x = b  -->  P p = -g : P is proj hess, g is grad, p is our search direction
 
     if (r.flag != 0) {
         puts("pcg did not converge!!!");
         exit(1);
     } else {
-        return r.x.reshaped<Eigen::RowMajor>(mesh.initial_positions.rows(), 
-                                            mesh.initial_positions.cols());    // to n x d
+        return r.x;//.reshaped<Eigen::RowMajor>(mesh.initial_positions.rows(), 
+                 //                           mesh.initial_positions.cols());    // to n x d
     }
-
-
 }

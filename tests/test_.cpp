@@ -7,14 +7,8 @@
 #include <iostream>
 #include <string>
 
-static int failures = 0;
-#define CHECK(cond) \
-    do { if (!(cond)) { \
-    std::cerr << "FAIL: " #cond "  (line " << __LINE__ << ")\n"; ++failures; \
-    } } while (0)
 
-
-void print_apply_dirichlet_results(Eigen::SparseMatrix<double>& A_sp, Eigen::VectorXd& b)
+void print_time_integrator_results(Eigen::SparseMatrix<double>& A_sp, Eigen::VectorXd& b)
 {
     std::cout << "A_sp:" << std::endl;
     std::cout << A_sp << std::endl;

@@ -1,15 +1,10 @@
 #include "utils.h"
+#include "test_utils.h"
 
 #include <Eigen/Dense>
 
 #include <iostream>
 #include <string>
-
-static int failures = 0;
-#define CHECK(cond) \
-    do { if (!(cond)) { \
-    std::cerr << "FAIL: " #cond "  (line " << __LINE__ << ")\n"; ++failures; \
-    } } while (0)
 
 
 void print_mat(Eigen::MatrixXd& A)

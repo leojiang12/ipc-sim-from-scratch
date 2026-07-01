@@ -3,6 +3,8 @@
 #include <Eigen/Dense>
 #include <iostream>
 
+// initialize point mass matrix (mass-spring)
+
 Mesh make_square_grid_edges(int nx, int ny, double width, double height) {
 
     /* 
