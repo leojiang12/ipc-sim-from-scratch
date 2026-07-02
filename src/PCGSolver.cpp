@@ -41,6 +41,18 @@ PCGResult pcg(const MatVec& A, const Eigen::VectorXd& b, const PCGOptions& opts)
     double delta_0 = delta_new;
 
     double rr_0 = r.squaredNorm();
+
+    // Trivially converged 
+    if (rr_0 == 0.0) {
+        PCGResult result;
+        result.x = x;           // x0
+        result.flag = 0;        
+        result.iters = 0;
+        result.relres = 0.0;    
+        result.resvec = {0.0};
+        return result;
+    }
+
     resvec.push_back(std::sqrt(rr_0 / rr_0));      // store relative residual in unpreconditioned space
 
     // Loops while less than max iterations and relative residual norm less than tol.

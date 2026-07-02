@@ -84,7 +84,8 @@ int main(int argc, char *argv[]) {
     if (failures) { 
         std::cerr << failures << " checks failed\n"; 
         return 1; 
+    } else {
+        std::cout << "check make_PSD passed\n";
+        return 0;
     }
-    std::cout << "check make_PSD passed\n";
-    return 0;
 }

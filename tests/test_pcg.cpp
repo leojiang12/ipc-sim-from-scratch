@@ -122,6 +122,35 @@ void test4_random_500x500_spd()
     CHECK(r.iters <= opts.maxit);                      
 }
 
+void test5_trivial()
+{
+    int n = 50;
+
+    // Initialize A, x*, b
+    Eigen::MatrixXd A = Eigen::MatrixXd::Random(n, n);
+    Eigen::MatrixXd I = Eigen::MatrixXd::Identity(n, n);
+    A = A * A.transpose() + 1e-4 * I;
+    Eigen::VectorXd x_star = Eigen::VectorXd::Zero(n); 
+    Eigen::VectorXd b = A * x_star;
+
+    // Matrix-Vector operator
+    auto matvec = [&A](const Eigen::VectorXd& x) { 
+        return A * x; 
+    };
+
+    // PCG Options
+    PCGOptions opts; 
+    opts.tol = 1e-10; 
+    opts.maxit = 1000;
+
+    // Solver
+    PCGResult r = pcg(matvec, b, opts);
+    print_pcg_results(r);
+    CHECK(r.flag == 0);         // converges for trivial cases
+    CHECK((r.x - x_star).norm() == 0.0);  
+    CHECK(r.iters <= opts.maxit);                      
+}
+
 int main(int argc, char *argv[]) {
 
     /*
@@ -133,6 +162,7 @@ int main(int argc, char *argv[]) {
         test2_small_spd();
         test3_random_50x50_spd();
         test4_random_500x500_spd();
+        test5_trivial();
 
     // --- T0: identity, plumbing ---
     } else if (!strcmp(argv[1], "identity")) {
@@ -150,14 +180,16 @@ int main(int argc, char *argv[]) {
     } else if (!strcmp(argv[1], "random_500x500_spd")) {
         test4_random_500x500_spd();
     
+    // --- T4: Trivial case: b - Ax = 0 ---
+    } else if (!strcmp(argv[1], "trivial")) {
+        test5_trivial();
     }
-
-
 
     if (failures) { 
         std::cerr << failures << " checks failed\n"; 
         return 1; 
+    } else {
+        std::cout << "all PCG tests passed\n";
+        return 0;
     }
-    std::cout << "all PCG tests passed\n";
-    return 0;
 }

@@ -60,10 +60,11 @@ target_include_directories(test_utilities INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/
 add_executable(test_pcg tests/test_pcg.cpp)
 target_link_libraries(test_pcg PRIVATE sim_lib test_utilities)
 
-add_test(NAME pcg_identity COMMAND test_pcg identitys)
+add_test(NAME pcg_identity COMMAND test_pcg identity)
 add_test(NAME pcg_small_spd COMMAND test_pcg small_spd)
 add_test(NAME pcg_random_50x50 COMMAND test_pcg random_50x50_spd)
 add_test(NAME pcg_random_500x500 COMMAND test_pcg random_500x500_spd)
+add_test(NAME pcg_trivial COMMAND test_pcg trivial)
 
 # dofmap test
 add_executable(test_dofmap tests/test_dofmap.cpp)
@@ -79,6 +80,11 @@ add_test(NAME utils_make_PSD COMMAND test_utils make_PSD)
 add_executable(test_energies tests/test_energies.cpp)
 target_link_libraries(test_energies PRIVATE sim_lib test_utilities)
 add_test(NAME inertia_energy COMMAND test_energies inertia)
+
+# energy functions test
+add_executable(test_timeintegrator tests/test_timeintegrator.cpp)
+target_link_libraries(test_timeintegrator PRIVATE sim_lib test_utilities)
+add_test(NAME time_integrator COMMAND test_timeintegrator time_integrator)
 
 # Compiler flags    (private, so flags are not pushed onto everything linking to sim_lib)
 target_compile_options(sim_lib      PRIVATE -Wall -Wextra -Wshadow)

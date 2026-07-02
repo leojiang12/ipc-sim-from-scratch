@@ -12,13 +12,6 @@
 #include <iostream>
 #include <memory>
 
-/** Forward declarations to tell the compiler these 
-    functions exist but defined after step_foward() */
-double IP_val(const Eigen::VectorXd& x_tilde, State& current_state, const Mesh& mesh, double h);  
-Eigen::VectorXd IP_grad(const Eigen::VectorXd& x_tilde, State& current_state, const Mesh& mesh, double h);  
-Eigen::SparseMatrix<double> IP_hess(const Eigen::VectorXd& x_tilde, State& current_state, const Mesh& mesh, double h);  
-Eigen::VectorXd search_dir(const Eigen::VectorXd& x_tilde, State& current_state, const Mesh& mesh, const DOFMap& dofmap, double h);
-
 
 /** Newton iteration loop */
 int step_forward(State& current_state, const Mesh& mesh, const DOFMap& dofmap, double h, double tol) {
@@ -53,7 +46,7 @@ int step_forward(State& current_state, const Mesh& mesh, const DOFMap& dofmap, d
     current_state.v = (x - x_n) / h;
     current_state.x = x;
 
-    return i;
+    return iter;
 }
 
 /** IP Energy (value) computation */

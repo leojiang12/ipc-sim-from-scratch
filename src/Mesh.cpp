@@ -10,7 +10,7 @@ void Mesh::assign_masses(double rho) {
     size_t n = this->initial_positions.rows();
     size_t d = this->initial_positions.cols();
 
-    double node_mass = (rho * this->nx * this->ny) / (n * d);   // total mass divided by num nodes
+    double node_mass = (rho * this->nx * this->ny) / static_cast<double>(n * d);   // total mass divided by num nodes
 
     // Create COO coordinate triplet vector
     std::vector<Eigen::Triplet<double>> triplets;
